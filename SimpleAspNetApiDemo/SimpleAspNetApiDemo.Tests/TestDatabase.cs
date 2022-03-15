@@ -1,21 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SimpleAspNetApiDemo.DataAccess;
 using SimpleAspNetApiDemo.Model;
 using System;
+using System.Data.Common;
 
 namespace SimpleAspNetApiDemo.Tests
 {
-    public static class TestUtilities
+    public class TestDatabase : IDisposable
     {
-        private const string MemoryConnectionString = "Filename=:memory:";
+        private const string MemoryConnectionString = "Data Source=:memory:";
 
-        public static SchoolContext GetBlankContext()
-        {
-            return Build();
-        }
+        private TestDatabase() { }
 
-        public static SchoolContext GetSampleContext()
+        public SchoolContext Context { get; private init; }
+
+        private DbConnection Connection { get; init; }
+
+        public static TestDatabase NewEmptyDatabase() => Build();
+
+        public static TestDatabase NewSampleDatabase()
         {
             Subject mathsSubject = new()
             {
@@ -95,20 +100,56 @@ namespace SimpleAspNetApiDemo.Tests
             });
         }
 
-        private static SchoolContext Build(Action<SchoolContext> buildData = null)
+        private static TestDatabase Build(Action<SchoolContext> buildData = null)
         {
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
-            DbContextOptionsBuilder<SchoolContext> dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>()
+            DbConnection connection = null;
+            SchoolContext context = null;
+
+            try
+            {
+                // EF Core always opens and closes connections in the back end
+                // so need to manually keep connection alive for duration of test.
+                connection = new SqliteConnection(MemoryConnectionString);
+                connection.Open();
+
+                using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
+                DbContextOptionsBuilder<SchoolContext> dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>()
                     .EnableSensitiveDataLogging()
                     .UseLoggerFactory(loggerFactory)
-                    .UseSqlite(MemoryConnectionString);
+                    .UseSqlite(connection);
 
-            SchoolContext context = new(dbContextOptionsBuilder.Options);
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-            buildData?.Invoke(context);
-            context.SaveChanges();
-            return context;
+                context = new SchoolContext(dbContextOptionsBuilder.Options);
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                buildData?.Invoke(context);
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                connection?.Dispose();
+                context?.Dispose();
+                throw;
+            }
+
+            return new TestDatabase
+            {
+                Connection = connection,
+                Context = context,
+            };
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            Connection?.Dispose();
+            Context?.Dispose();
         }
     }
 }

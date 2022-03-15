@@ -2,7 +2,6 @@
 using NSubstitute;
 using NUnit.Framework;
 using SimpleAspNetApiDemo.Controllers;
-using SimpleAspNetApiDemo.DataAccess;
 using System.Linq;
 
 namespace SimpleAspNetApiDemo.Tests.ControllerTests
@@ -13,9 +12,9 @@ namespace SimpleAspNetApiDemo.Tests.ControllerTests
         [Test]
         public void BlankTest()
         {
-            using SchoolContext schoolContext = TestUtilities.GetBlankContext();
+            using TestDatabase database = TestDatabase.NewEmptyDatabase();
             ILogger<TeacherController> logger = Substitute.For<ILogger<TeacherController>>();
-            TeacherController controller = new(logger, schoolContext);
+            TeacherController controller = new(logger, database.Context);
 
             int actualCount = controller.Get().Count();
 
@@ -25,9 +24,9 @@ namespace SimpleAspNetApiDemo.Tests.ControllerTests
         [Test]
         public void SampleTest()
         {
-            using SchoolContext schoolContext = TestUtilities.GetSampleContext();
+            using TestDatabase database = TestDatabase.NewSampleDatabase();
             ILogger<TeacherController> logger = Substitute.For<ILogger<TeacherController>>();
-            TeacherController controller = new(logger, schoolContext);
+            TeacherController controller = new(logger, database.Context);
 
             int actualCount = controller.Get().Count();
 
