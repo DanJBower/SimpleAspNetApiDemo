@@ -1,15 +1,22 @@
 ﻿using SimpleAspNetApiDemo.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleAspNetApiDemo.Model
 {
     public class Subject : ISubject
     {
-        public Guid Id { get; }
-        public string Name { get; }
-        public string Description { get; }
-        public IList<IClass> Classes { get; }
+        [Required]
+        public Guid Id { get; set; } = Guid.NewGuid();
+
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+        public IList<IClass> Classes { get; set; }
 
         public override bool Equals(object other) => Equals(other as ISubject);
 
@@ -32,5 +39,10 @@ namespace SimpleAspNetApiDemo.Model
         }
 
         public static bool operator !=(Subject lhs, ISubject rhs) => !(lhs == rhs);
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
 }

@@ -7,7 +7,8 @@ namespace SimpleAspNetApiDemo.Interfaces
     {
         Guid Id { get; }
         string Name { get; }
-        string Description { get; }
+        int Age { get; }
+        ISubject FavouriteSubject { get; }
         IList<IClass> Classes { get; }
     }
 }
