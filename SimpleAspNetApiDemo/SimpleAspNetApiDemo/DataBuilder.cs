@@ -1,20 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using SimpleAspNetApiDemo.DataAccess;
 using SimpleAspNetApiDemo.Model;
 using System;
-using System.Data.Common;
 
 namespace SimpleAspNetApiDemo
 {
     public static class DataBuilder
     {
-        public static void EnsureCreated(this DbConnection dbConnection)
+        public static void EnsureCreated(this string dbConnectionString)
         {
-            Build(dbConnection);
+            Build(dbConnectionString);
         }
 
-        public static void BuildSample(this DbConnection dbConnection)
+        public static void BuildSample(this string dbConnectionString)
         {
             Subject mathsSubject = new()
             {
@@ -84,7 +85,7 @@ namespace SimpleAspNetApiDemo
                 Result = 75,
             };
 
-            Build(dbConnection, (context, tablesExist) =>
+            Build(dbConnectionString, (context, tablesExist) =>
             {
                 if (tablesExist) return;
 
@@ -96,34 +97,16 @@ namespace SimpleAspNetApiDemo
             });
         }
 
-        private static void Build(DbConnection dbConnection, Action<SchoolContext, bool> buildData = null)
+        private static void Build(string connectionString, Action<SchoolContext, bool> buildData = null)
         {
-            // Basically check if the Teachers table exists or not.
-            // If it does, set tablesExist to true so the program
-            // does not re-add the sample starting data.
-            using DbCommand command = dbConnection.CreateCommand();
-            command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='Teachers';";
-            bool tablesExist = false;
-
-            using DbDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                tablesExist = true;
-            }
-
             using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
             DbContextOptionsBuilder<SchoolContext> dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>()
                     .EnableSensitiveDataLogging()
                     .UseLoggerFactory(loggerFactory)
-                    .UseSqlite(dbConnection);
+                    .UseSqlite(connectionString);
 
             using SchoolContext context = new(dbContextOptionsBuilder.Options);
-
-            // Create tables if database doesn't exist.
-            // This will not update the tables if their definition changes.
-            // Delete the database after model changes so this can
-            // make the right tables.
+            bool tablesExist = context.Database.GetService<IRelationalDatabaseCreator>().HasTables();
             context.Database.EnsureCreated();
             buildData?.Invoke(context, tablesExist);
             context.SaveChanges();
