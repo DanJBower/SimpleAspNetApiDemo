@@ -5,9 +5,9 @@ namespace SimpleAspNetApiDemo.Interfaces
 {
     public interface ISubject : IEquatable<ISubject>
     {
-        Guid Id { get; set; }
-        string Name { get; set; }
-        string Description { get; set; }
-        IList<IClass> Classes { get; set; }
+        Guid Id { get; }
+        string Name { get; }
+        string Description { get; }
+        IList<IClass> Classes { get; }
     }
 }

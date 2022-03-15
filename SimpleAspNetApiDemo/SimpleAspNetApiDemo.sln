@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleAspNetApiDemo", "SimpleAspNetApiDemo\SimpleAspNetApiDemo.csproj", "{DCF1AD4F-5B41-4D5D-998E-639D3B021189}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleAspNetApiDemo.Tests", "SimpleAspNetApiDemo.Tests\SimpleAspNetApiDemo.Tests.csproj", "{A3CEC48E-C070-4295-A215-5B59C9741D0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DCF1AD4F-5B41-4D5D-998E-639D3B021189}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCF1AD4F-5B41-4D5D-998E-639D3B021189}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCF1AD4F-5B41-4D5D-998E-639D3B021189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CEC48E-C070-4295-A215-5B59C9741D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CEC48E-C070-4295-A215-5B59C9741D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CEC48E-C070-4295-A215-5B59C9741D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CEC48E-C070-4295-A215-5B59C9741D0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
