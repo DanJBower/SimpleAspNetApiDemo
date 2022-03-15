@@ -16,16 +16,83 @@ namespace SimpleAspNetApiDemo
 
         public static void BuildSample(this DbConnection dbConnection)
         {
-            Teacher steve = new()
+            Subject mathsSubject = new()
             {
-                Name = "Steve",
+                Name = "Maths",
+            };
+
+            Subject adaSubject = new()
+            {
+                Name = "Ada",
+                Description = "The \"best\" programming language!",
+            };
+
+            Teacher fiona = new()
+            {
+                Name = "Fiona",
+            };
+
+            Teacher dereck = new()
+            {
+                Name = "Dereck",
+            };
+
+            Student adam = new()
+            {
+                Age = 12,
+                Name = "Adam",
+            };
+
+            Student ed = new()
+            {
+                Age = 11,
+                Name = "Ed",
+            };
+
+            Student kimi = new()
+            {
+                Age = 13,
+                Name = "Kimi",
+                FavouriteSubject = adaSubject,
+            };
+
+            Class maths = new()
+            {
+                Name = "Maths Group A",
+                Teacher = fiona,
+                Subject = mathsSubject,
+            };
+
+            Class ada = new()
+            {
+                Name = "Ada Group C",
+                Teacher = dereck,
+                Subject = adaSubject,
+            };
+
+            ada.Students.Add(adam);
+            ada.Students.Add(kimi);
+            ada.Students.Add(ed);
+            maths.Students.Add(kimi);
+            maths.Students.Add(ed);
+
+            Grade edAda = new()
+            {
+                Class = ada,
+                Student = ed,
+                Name = "First Ada Exam",
+                Result = 75,
             };
 
             Build(dbConnection, (context, tablesExist) =>
             {
                 if (tablesExist) return;
 
-                context.Teachers.AddRange(steve);
+                context.Teachers.AddRange(fiona, dereck);
+                context.Students.AddRange(kimi, ed, adam);
+                context.Subjects.AddRange(mathsSubject, adaSubject);
+                context.Classes.AddRange(maths, ada);
+                context.Grades.AddRange(edAda);
             });
         }
 

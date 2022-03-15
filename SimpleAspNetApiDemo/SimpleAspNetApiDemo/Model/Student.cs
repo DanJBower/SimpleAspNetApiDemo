@@ -1,22 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleAspNetApiDemo.Model
 {
     public class Student : IEquatable<Student>
     {
-        public Guid Id { get; set; }
+        [Required]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public int Age { get; set; }
 
         public Subject FavouriteSubject { get; set; }
 
-        public List<Class> Classes { get; set; }
+        public List<Class> Classes { get; set; } = new();
 
-        public List<Grade> Grades { get; set; }
+        public List<Grade> Grades { get; set; } = new();
 
         public override bool Equals(object other) => Equals(other as Student);
 

@@ -1,20 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleAspNetApiDemo.Model
 {
     public class Grade : IEquatable<Grade>, IComparable<Grade>, IComparable
     {
+        [Required]
         public Guid StudentId { get; set; }
 
+        [Required]
         public Student Student { get; set; }
 
+        [Required]
         public Guid ClassId { get; set; }
 
+        [Required]
         public Class Class { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public int Result { get; set; }
 
         public override bool Equals(object other) => Equals(other as Grade);
