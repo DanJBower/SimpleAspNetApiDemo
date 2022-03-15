@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SimpleAspNetApiDemo.DataAccess;
-using SimpleAspNetApiDemo.Model;
 using System.Collections.Generic;
+using SimpleAspNetApiDemo.DataAccess.Entities;
 
 namespace SimpleAspNetApiDemo.Controllers
 {
@@ -20,7 +20,7 @@ namespace SimpleAspNetApiDemo.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Teacher> Get()
+        public IEnumerable<TeacherEntity> Get()
         {
             return _context.Teachers;
         }

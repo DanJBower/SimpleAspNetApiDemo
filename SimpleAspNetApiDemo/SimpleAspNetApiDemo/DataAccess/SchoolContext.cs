@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SimpleAspNetApiDemo.Model;
+using SimpleAspNetApiDemo.DataAccess.Entities;
 
 namespace SimpleAspNetApiDemo.DataAccess
 {
     public class SchoolContext : DbContext
     {
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<TeacherEntity> Teachers { get; set; }
 
-        public DbSet<Grade> Grades { get; set; }
+        public DbSet<GradeEntity> Grades { get; set; }
 
-        public DbSet<Student> Students { get; set; }
+        public DbSet<StudentEntity> Students { get; set; }
 
-        public DbSet<Class> Classes { get; set; }
+        public DbSet<ClassEntity> Classes { get; set; }
 
-        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<SubjectEntity> Subjects { get; set; }
 
         public SchoolContext() { }
 
@@ -23,11 +23,11 @@ namespace SimpleAspNetApiDemo.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            Grade.Configure(modelBuilder);
-            Teacher.Configure(modelBuilder);
-            Student.Configure(modelBuilder);
-            Class.Configure(modelBuilder);
-            Subject.Configure(modelBuilder);
+            GradeEntity.Configure(modelBuilder);
+            TeacherEntity.Configure(modelBuilder);
+            StudentEntity.Configure(modelBuilder);
+            ClassEntity.Configure(modelBuilder);
+            SubjectEntity.Configure(modelBuilder);
         }
     }
 }

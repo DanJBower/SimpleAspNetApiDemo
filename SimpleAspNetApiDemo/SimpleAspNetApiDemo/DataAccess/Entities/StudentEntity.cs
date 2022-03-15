@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace SimpleAspNetApiDemo.Model
+namespace SimpleAspNetApiDemo.DataAccess.Entities
 {
-    public class Student : IEquatable<Student>
+    public class StudentEntity : IEquatable<StudentEntity>
     {
         [Required]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -16,15 +16,15 @@ namespace SimpleAspNetApiDemo.Model
         [Required]
         public int Age { get; set; }
 
-        public Subject FavouriteSubject { get; set; }
+        public SubjectEntity FavouriteSubject { get; set; }
 
-        public List<Class> Classes { get; set; } = new();
+        public List<ClassEntity> Classes { get; set; } = new();
 
-        public List<Grade> Grades { get; set; } = new();
+        public List<GradeEntity> Grades { get; set; } = new();
 
-        public override bool Equals(object other) => Equals(other as Student);
+        public override bool Equals(object other) => Equals(other as StudentEntity);
 
-        public bool Equals(Student other)
+        public bool Equals(StudentEntity other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -35,14 +35,14 @@ namespace SimpleAspNetApiDemo.Model
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public static bool operator ==(Student lhs, Student rhs)
+        public static bool operator ==(StudentEntity lhs, StudentEntity rhs)
         {
             if (lhs is null) return rhs is null;
 
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Student lhs, Student rhs) => !(lhs == rhs);
+        public static bool operator !=(StudentEntity lhs, StudentEntity rhs) => !(lhs == rhs);
 
         public override string ToString()
         {
@@ -51,6 +51,10 @@ namespace SimpleAspNetApiDemo.Model
 
         internal static void Configure(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<StudentEntity>(entity =>
+            {
+                entity.ToTable("Students");
+            });
         }
     }
 }

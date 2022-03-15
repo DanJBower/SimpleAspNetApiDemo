@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SimpleAspNetApiDemo.Model
+namespace SimpleAspNetApiDemo.DataAccess.Entities
 {
-    public class Teacher : IEquatable<Teacher>
+    public class TeacherEntity : IEquatable<TeacherEntity>
     {
         [Required]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -13,11 +13,11 @@ namespace SimpleAspNetApiDemo.Model
         [Required]
         public string Name { get; set; }
 
-        public List<Class> Classes { get; set; } = new();
+        public List<ClassEntity> Classes { get; set; } = new();
 
-        public override bool Equals(object other) => Equals(other as Teacher);
+        public override bool Equals(object other) => Equals(other as TeacherEntity);
 
-        public bool Equals(Teacher other)
+        public bool Equals(TeacherEntity other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -28,14 +28,14 @@ namespace SimpleAspNetApiDemo.Model
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public static bool operator ==(Teacher lhs, Teacher rhs)
+        public static bool operator ==(TeacherEntity lhs, TeacherEntity rhs)
         {
             if (lhs is null) return rhs is null;
 
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Teacher lhs, Teacher rhs) => !(lhs == rhs);
+        public static bool operator !=(TeacherEntity lhs, TeacherEntity rhs) => !(lhs == rhs);
 
         public override string ToString()
         {
@@ -44,6 +44,10 @@ namespace SimpleAspNetApiDemo.Model
 
         internal static void Configure(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TeacherEntity>(entity =>
+            {
+                entity.ToTable("Teachers");
+            });
         }
     }
 }

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SimpleAspNetApiDemo.Model
+namespace SimpleAspNetApiDemo.DataAccess.Entities
 {
-    public class Subject : IEquatable<Subject>
+    public class SubjectEntity : IEquatable<SubjectEntity>
     {
         [Required]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -15,11 +15,11 @@ namespace SimpleAspNetApiDemo.Model
 
         public string Description { get; set; }
 
-        public List<Class> Classes { get; set; } = new();
+        public List<ClassEntity> Classes { get; set; } = new();
 
-        public override bool Equals(object other) => Equals(other as Subject);
+        public override bool Equals(object other) => Equals(other as SubjectEntity);
 
-        public bool Equals(Subject other)
+        public bool Equals(SubjectEntity other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -30,14 +30,14 @@ namespace SimpleAspNetApiDemo.Model
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public static bool operator ==(Subject lhs, Subject rhs)
+        public static bool operator ==(SubjectEntity lhs, SubjectEntity rhs)
         {
             if (lhs is null) return rhs is null;
 
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Subject lhs, Subject rhs) => !(lhs == rhs);
+        public static bool operator !=(SubjectEntity lhs, SubjectEntity rhs) => !(lhs == rhs);
 
         public override string ToString()
         {
@@ -46,6 +46,10 @@ namespace SimpleAspNetApiDemo.Model
 
         internal static void Configure(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SubjectEntity>(entity =>
+            {
+                entity.ToTable("Subjects");
+            });
         }
     }
 }

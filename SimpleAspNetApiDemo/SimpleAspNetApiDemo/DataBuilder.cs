@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using SimpleAspNetApiDemo.DataAccess;
-using SimpleAspNetApiDemo.Model;
 using System;
+using SimpleAspNetApiDemo.DataAccess.Entities;
 
 namespace SimpleAspNetApiDemo
 {
@@ -17,54 +17,54 @@ namespace SimpleAspNetApiDemo
 
         public static void BuildSample(this string dbConnectionString)
         {
-            Subject mathsSubject = new()
+            SubjectEntity mathsSubject = new()
             {
                 Name = "Maths",
             };
 
-            Subject adaSubject = new()
+            SubjectEntity adaSubject = new()
             {
                 Name = "Ada",
                 Description = "The \"best\" programming language!",
             };
 
-            Teacher fiona = new()
+            TeacherEntity fiona = new()
             {
                 Name = "Fiona",
             };
 
-            Teacher dereck = new()
+            TeacherEntity dereck = new()
             {
                 Name = "Dereck",
             };
 
-            Student adam = new()
+            StudentEntity adam = new()
             {
                 Age = 12,
                 Name = "Adam",
             };
 
-            Student ed = new()
+            StudentEntity ed = new()
             {
                 Age = 11,
                 Name = "Ed",
             };
 
-            Student kimi = new()
+            StudentEntity kimi = new()
             {
                 Age = 13,
                 Name = "Kimi",
                 FavouriteSubject = adaSubject,
             };
 
-            Class maths = new()
+            ClassEntity maths = new()
             {
                 Name = "Maths Group A",
                 Teacher = fiona,
                 Subject = mathsSubject,
             };
 
-            Class ada = new()
+            ClassEntity ada = new()
             {
                 Name = "Ada Group C",
                 Teacher = dereck,
@@ -77,7 +77,7 @@ namespace SimpleAspNetApiDemo
             maths.Students.Add(kimi);
             maths.Students.Add(ed);
 
-            Grade edAda = new()
+            GradeEntity edAda = new()
             {
                 Class = ada,
                 Student = ed,
