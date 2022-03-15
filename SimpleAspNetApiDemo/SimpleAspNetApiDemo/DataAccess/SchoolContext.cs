@@ -25,6 +25,12 @@ namespace SimpleAspNetApiDemo.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            Grade.Configure(modelBuilder);
+            Teacher.Configure(modelBuilder);
+            Student.Configure(modelBuilder);
+            Class.Configure(modelBuilder);
+            Subject.Configure(modelBuilder);
         }
 
         public sealed override void Dispose()

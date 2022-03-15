@@ -1,26 +1,22 @@
-﻿using SimpleAspNetApiDemo.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace SimpleAspNetApiDemo.Model
 {
-    public class Subject : ISubject
+    public class Subject : IEquatable<Subject>
     {
-        [Required]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
-        public IList<IClass> Classes { get; set; }
+        public List<Class> Classes { get; set; }
 
-        public override bool Equals(object other) => Equals(other as ISubject);
+        public override bool Equals(object other) => Equals(other as Subject);
 
-        public bool Equals(ISubject other)
+        public bool Equals(Subject other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -31,18 +27,22 @@ namespace SimpleAspNetApiDemo.Model
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public static bool operator ==(Subject lhs, ISubject rhs)
+        public static bool operator ==(Subject lhs, Subject rhs)
         {
             if (lhs is null) return rhs is null;
 
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Subject lhs, ISubject rhs) => !(lhs == rhs);
+        public static bool operator !=(Subject lhs, Subject rhs) => !(lhs == rhs);
 
         public override string ToString()
         {
             return $"{Name}";
+        }
+
+        internal static void Configure(ModelBuilder modelBuilder)
+        {
         }
     }
 }

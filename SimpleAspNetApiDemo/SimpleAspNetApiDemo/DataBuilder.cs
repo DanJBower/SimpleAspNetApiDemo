@@ -32,7 +32,7 @@ namespace SimpleAspNetApiDemo
         private static void Build(DbConnection dbConnection, Action<SchoolContext, bool> buildData = null)
         {
             using DbCommand command = dbConnection.CreateCommand();
-            command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='test';";
+            command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='Teachers';";
             bool tablesExist = false;
 
             using DbDataReader reader = command.ExecuteReader();

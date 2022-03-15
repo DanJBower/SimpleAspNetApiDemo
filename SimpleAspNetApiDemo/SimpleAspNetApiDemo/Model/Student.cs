@@ -1,29 +1,26 @@
-﻿using SimpleAspNetApiDemo.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace SimpleAspNetApiDemo.Model
 {
-    public class Student : IStudent
+    public class Student : IEquatable<Student>
     {
-        [Required]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        [Required]
         public int Age { get; set; }
 
-        [Required]
-        public ISubject FavouriteSubject { get; set; }
+        public Subject FavouriteSubject { get; set; }
 
-        public IList<IClass> Classes { get; set; }
+        public List<Class> Classes { get; set; }
 
-        public override bool Equals(object other) => Equals(other as IStudent);
+        public List<Grade> Grades { get; set; }
 
-        public bool Equals(IStudent other)
+        public override bool Equals(object other) => Equals(other as Student);
+
+        public bool Equals(Student other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -34,18 +31,22 @@ namespace SimpleAspNetApiDemo.Model
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public static bool operator ==(Student lhs, IStudent rhs)
+        public static bool operator ==(Student lhs, Student rhs)
         {
             if (lhs is null) return rhs is null;
 
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Student lhs, IStudent rhs) => !(lhs == rhs);
+        public static bool operator !=(Student lhs, Student rhs) => !(lhs == rhs);
 
         public override string ToString()
         {
             return $"{Name} ({Age})";
+        }
+
+        internal static void Configure(ModelBuilder modelBuilder)
+        {
         }
     }
 }
