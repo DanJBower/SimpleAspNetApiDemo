@@ -12,10 +12,7 @@ namespace SimpleAspNetApiDemo
             // Ensure Database exists
             // If doesn't exist, add base data
             using (DbConnection connection = SchoolDatabase.GetSchoolDbConnection())
-            {
-                connection.Open();
                 connection.BuildSample();
-            }
 
             // Run API
             CreateHostBuilder(args).Build().Run();

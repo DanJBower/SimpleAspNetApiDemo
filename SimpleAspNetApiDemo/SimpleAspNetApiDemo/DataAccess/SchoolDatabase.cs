@@ -5,9 +5,13 @@ namespace SimpleAspNetApiDemo.DataAccess
 {
     public static class SchoolDatabase
     {
+        public const string SchoolDatabaseConnectionString = "Data Source=data.db;";
+
         public static DbConnection GetSchoolDbConnection()
         {
-            return new SqliteConnection("Data Source=data.db;");
+            DbConnection connection = new SqliteConnection(SchoolDatabaseConnectionString);
+            connection.Open();
+            return connection;
         }
     }
 }
