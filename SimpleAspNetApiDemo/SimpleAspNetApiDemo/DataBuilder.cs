@@ -98,6 +98,9 @@ namespace SimpleAspNetApiDemo
 
         private static void Build(DbConnection dbConnection, Action<SchoolContext, bool> buildData = null)
         {
+            // Basically check if the Teachers table exists or not.
+            // If it does, set tablesExist to true so the program
+            // does not re-add the sample starting data.
             using DbCommand command = dbConnection.CreateCommand();
             command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='Teachers';";
             bool tablesExist = false;
@@ -116,6 +119,11 @@ namespace SimpleAspNetApiDemo
                     .UseSqlite(dbConnection);
 
             using SchoolContext context = new(dbContextOptionsBuilder.Options);
+
+            // Create tables if database doesn't exist.
+            // This will not update the tables if their definition changes.
+            // Delete the database after model changes so this can
+            // make the right tables.
             context.Database.EnsureCreated();
             buildData?.Invoke(context, tablesExist);
             context.SaveChanges();
