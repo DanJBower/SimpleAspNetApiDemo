@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SimpleAspNetApiDemo.DataAccess;
+using SimpleAspNetApiDemo.Model;
 using System.Collections.Generic;
-using SimpleAspNetApiDemo.DataAccess.Entities;
+using System.Linq;
 
 namespace SimpleAspNetApiDemo.Controllers
 {
@@ -20,9 +21,14 @@ namespace SimpleAspNetApiDemo.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<TeacherEntity> Get()
+        public IEnumerable<Teacher> Get()
         {
-            return _context.Teachers;
+            return _context.Teachers.Select(entity => new Teacher
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Links = 
+            });
         }
     }
 }
