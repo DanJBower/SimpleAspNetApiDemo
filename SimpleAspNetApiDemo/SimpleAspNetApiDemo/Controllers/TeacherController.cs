@@ -27,7 +27,6 @@ namespace SimpleAspNetApiDemo.Controllers
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Links = 
             });
         }
     }
